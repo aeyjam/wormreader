@@ -7,6 +7,7 @@
 namespace fishtank {
 
 constexpr int STARTER_FISH = 4;
+constexpr int FISH_KIND_COUNT = 9;     // must match FISH_KINDS in FishTankActivity.cpp
 constexpr int MAX_FISH = 12;          // 4 starters + up to 8 "book fish"
 constexpr int PAGES_PER_WORM = 20;    // read this many pages -> 1 bookworm treat
 constexpr int MAX_WORMS = 99;

@@ -60,16 +60,81 @@ const char* const ANGEL_F1[] = {
     "......#....", ".....##....", ".#..####...", ".#.######..", ".#######.##",
     ".#.#######.", ".#..####...", ".....##....", "......#....",
 };
+const char* const PUFFER_F0[] = {
+    "...#..#..#..", "....######..", "#..########.", "##.#####.###", "############",
+    "##.#########", "#..########.", "....######..", "...#..#..#..",
+};
+const char* const PUFFER_F1[] = {
+    "...#..#..#..", "....######..", ".#.########.", ".#.#####.###", "############",
+    ".#.#########", ".#.########.", "....######..", "...#..#..#..",
+};
+const char* const GOLD_F0[] = {
+    "###.....####...", ".###..#######..", "..##########.#.", "....##########.",
+    "..############.", ".###..#######..", "###.....####...", "........#......",
+};
+const char* const GOLD_F1[] = {
+    ".##.....####...", "..###.#######..", "..##########.#.", "....##########.",
+    "..############.", "..###.#######..", ".##.....####...", "........#......",
+};
+const char* const BETTA_F0[] = {
+    "......####....", "#...#######...", "##..########..", "###.#######.##", "##############",
+    "###.##########", "##..########..", "#...##.##.#...", "....#..#..#...", ".....#..#.....",
+};
+const char* const BETTA_F1[] = {
+    "......####....", "....#######...", ".#..########..", ".##.#######.##", ".#############",
+    ".##.##########", ".#..########..", "....##.##.#...", "....#..#..#...", ".....#..#.....",
+};
+const char* const SHARK_F0[] = {
+    "........#.........", ".......##.........", "#.....##########..", "##.###########.###",
+    ".#################", "##.....######.#...", "#.......#.........",
+};
+const char* const SHARK_F1[] = {
+    "........#.........", ".......##.........", ".#....##########..", ".#.###########.###",
+    ".#################", ".#.....######.#...", "........#.........",
+};
+const char* const ANGLER_F0[] = {
+    "...........##.", "..........#...", ".....######...", "#..#########..", "##.######.###.",
+    ".############.", "##.##.#.#.#.##", "#..##########.", ".....######...",
+};
+const char* const ANGLER_F1[] = {
+    "..........###.", "..........#...", ".....######...", ".#.#########..", ".#.######.###.",
+    ".############.", ".#.##.#.#.#.##", ".#.##########.", ".....######...",
+};
+const char* const CLOWN_F0[] = {
+    ".....######...", "#..###.##.##..", "##.###.##.#.##", ".#####.##.####",
+    ".#####.##.####", "##.###.##.##..", "#....######...",
+};
+const char* const CLOWN_F1[] = {
+    ".....######...", "...###.##.##..", ".#.###.##.#.##", ".#####.##.####",
+    ".#####.##.####", ".#.###.##.##..", ".....######...",
+};
+// Plants: drawn from the bottom row up; upper rows sway more.
+const char* const FERN[] = {
+    ".##......", "...##....", "....#....", "....#....", "....#.##.", "....##...", "....#....", "....#....",
+    ".##.#....", "...##....", "....#....", "....#....", "....#.##.", "....##...", "....#....", "....#....",
+    ".##.#....", "...##....", "....#....", "....#....", "....#.##.", "....##...", "....#....", "....#....",
+    ".##.#....", "...##....", "....#....", "....#....", "....#.##.", "....##...", "....#....", "....#....",
+    "....#....", "....#....", "....#....", "....#....", "....#....", "....#....",
+};
 const char* const HEART[] = {".#.#.", "#####", ".###.", "..#.."};
 const char* const BUBBLE[] = {".#.", "#.#", ".#."};
 const char* const WORM_F0[] = {"##..##", "..##.."};
 const char* const WORM_F1[] = {"..##..", "##..##"};
 
-const Sprite FISH_KINDS[3][2] = {
-    {{ROUND_F0, 14, 7}, {ROUND_F1, 14, 7}},
-    {{SLIM_F0, 16, 5}, {SLIM_F1, 16, 5}},
-    {{ANGEL_F0, 11, 9}, {ANGEL_F1, 11, 9}},
+// Order matters: saved fish remember their kind by index, so only append.
+const Sprite FISH_KINDS[][2] = {
+    {{ROUND_F0, 14, 7}, {ROUND_F1, 14, 7}},     // 0 ปลากลม
+    {{SLIM_F0, 16, 5}, {SLIM_F1, 16, 5}},       // 1 ปลายาวลายจุด
+    {{ANGEL_F0, 11, 9}, {ANGEL_F1, 11, 9}},     // 2 ปลาเทวดา
+    {{PUFFER_F0, 12, 9}, {PUFFER_F1, 12, 9}},   // 3 ปลาปักเป้า
+    {{BETTA_F0, 14, 10}, {BETTA_F1, 14, 10}},   // 4 ปลากัด
+    {{GOLD_F0, 15, 8}, {GOLD_F1, 15, 8}},       // 5 ปลาทองหางพลิ้ว
+    {{SHARK_F0, 18, 7}, {SHARK_F1, 18, 7}},     // 6 ฉลามจิ๋ว
+    {{ANGLER_F0, 14, 9}, {ANGLER_F1, 14, 9}},   // 7 ปลาตกเบ็ด
+    {{CLOWN_F0, 14, 7}, {CLOWN_F1, 14, 7}},     // 8 ปลาการ์ตูน
 };
+constexpr int KIND_COUNT = sizeof(FISH_KINDS) / sizeof(FISH_KINDS[0]);
+static_assert(KIND_COUNT == fishtank::FISH_KIND_COUNT, "update FISH_KIND_COUNT in FishTankStore.h");
 
 // Murk pattern: 4x4 ordered dither, and how many of the 16 cells are dark
 // for each "day since cleaning" (index 0 = day 1 = crystal clear).
@@ -289,7 +354,7 @@ void FishTankActivity::step() {
   for (int i = 0; i < fishSpawned; ++i) {
     Fish& fi = fish[i];
     const int px = fishPx(i);
-    const Sprite& sp = FISH_KINDS[s.fish[i].kind % 3][0];
+    const Sprite& sp = FISH_KINDS[s.fish[i].kind % KIND_COUNT][0];
     const int fw = sp.w * px, fh = sp.h * px;
     int spd = fi.speed;
     if (hungry) spd = spd / 2 + 1;  // hungry fish are sluggish
@@ -410,15 +475,39 @@ void FishTankActivity::render(RenderLock&&) {
   renderer.fillRoundedRect(40, floorY - 30, 70, 34, 14, Color::Black);
   renderer.fillRoundedRect(W - 150, floorY - 22, 50, 26, 10, Color::Black);
 
-  // Seaweed (three clumps, swaying)
+  // Plants (sway more toward the top)
   static const int8_t sway[] = {0, 1, 2, 2, 1, 0, -1, -2, -2, -1};
-  const int maxSeg = (floorY - TOP_H) * 2 / 3 / 12;  // seaweed reaches ~2/3 of the water
-  const int weedX[] = {W / 2 - 40, W - 60, W / 2 - 10};
-  const int weedH[] = {maxSeg, maxSeg * 3 / 4, maxSeg * 2 / 3};
+  // 1) Straight seaweed strands
+  const int maxSeg = (floorY - TOP_H) * 2 / 3 / 12;  // reaches ~2/3 of the water
+  const int weedX[] = {W / 2 - 40, W / 2 - 10, W - 60};
+  const int weedH[] = {maxSeg, maxSeg * 2 / 3, maxSeg * 3 / 4};
   for (int w = 0; w < 3; ++w) {
     for (int seg = 0; seg < weedH[w]; ++seg) {
       const int off = sway[(seg + frame + w * 3) % 10] * (seg / 4);
       renderer.fillRect(weedX[w] + off * 2, floorY - (seg + 1) * 12, 8, 12, true);
+    }
+  }
+  // 2) Branching ferns with alternating twigs
+  struct Plant {
+    const char* const* rows;
+    uint8_t w, h, px;
+    int x;  // left edge, screen px
+  };
+  const Plant plants[] = {
+      {FERN, 9, 38, 3, 140},
+      {FERN, 9, 38, 3, W / 2 + 80},
+      {FERN, 9, 38, 3, W - 210},
+  };
+  for (int p = 0; p < static_cast<int>(sizeof(plants) / sizeof(plants[0])); ++p) {
+    const Plant& pl = plants[p];
+    const int top = floorY - pl.h * pl.px;
+    for (int row = 0; row < pl.h; ++row) {
+      const int lift = pl.h - row;  // rows above the root
+      const int off = sway[(frame + row / 6 + p * 4) % 10] * lift * 3 / (pl.h * 2);
+      for (int col = 0; col < pl.w; ++col) {
+        if (pl.rows[row][col] != '#') continue;
+        renderer.fillRect(pl.x + (col + off) * pl.px, top + row * pl.px, pl.px, pl.px, true);
+      }
     }
   }
 
@@ -444,7 +533,7 @@ void FishTankActivity::render(RenderLock&&) {
   for (int i = 0; i < fishSpawned; ++i) {
     const Fish& fi = fish[i];
     const int px = fishPx(i);
-    const Sprite& sp = FISH_KINDS[s.fish[i].kind % 3][(frame + i) % 2];
+    const Sprite& sp = FISH_KINDS[s.fish[i].kind % KIND_COUNT][(frame + i) % 2];
     drawSprite(renderer, sp, fi.x, fi.y, px, fi.dir < 0, halo);
     if (fi.happy) drawSprite(renderer, heart, fi.x + sp.w * px / 2 - 12, fi.y - 30, 5, false, halo);
     if (s.fish[i].name[0]) {

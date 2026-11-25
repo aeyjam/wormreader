@@ -65,8 +65,15 @@ State& state() {
     st.lastFed = now - FEED_EVERY_S;
     st.lastCleaned = now;
     st.fishCount = STARTER_FISH;
-    for (int i = 0; i < STARTER_FISH; ++i) st.fish[i] = {static_cast<uint8_t>(i % 2), 3, ""};
+    for (int i = 0; i < STARTER_FISH; ++i) st.fish[i] = {static_cast<uint8_t>(i % FISH_KIND_COUNT), 3, ""};
     save();
+  }
+  // Tanks made before there were 9 kinds had starters 0,1,0,1: give the last two new looks.
+  for (int i = 2; i < STARTER_FISH && i < st.fishCount; ++i) {
+    if (st.fish[i].name[0] == '\0' && st.fish[i].kind == i % 2) {
+      st.fish[i].kind = static_cast<uint8_t>(i);
+      save();
+    }
   }
   // If the clock went backwards (lost time), don't let timers run negative.
   if (st.lastFed > now) st.lastFed = now - FEED_EVERY_S;
@@ -100,7 +107,7 @@ void noteBookFinished(const std::string& title) {
 
   if (s.fishCount < MAX_FISH) {
     SavedFish& f = s.fish[s.fishCount];
-    f.kind = static_cast<uint8_t>(h % 3);
+    f.kind = static_cast<uint8_t>(h % FISH_KIND_COUNT);
     f.grown = 0;  // book fish arrive as babies
     makeName(f.name, sizeof(f.name), title, s.fishCount - STARTER_FISH + 1);
     ++s.fishCount;
