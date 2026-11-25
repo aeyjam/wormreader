@@ -317,8 +317,11 @@ void HomeActivity::freeCoverBuffer() {
 }
 
 void HomeActivity::loop() {
-  // Easter egg: long-press Back opens the fish tank.
-  if (mappedInput.wasLongPressed(MappedInputManager::Button::Back, 1500)) {
+  // Easter egg: open the fish tank by long-pressing Back, or by pressing and
+  // holding a finger anywhere on the Home screen (touch devices like X4 Pro).
+  int holdX = 0, holdY = 0;
+  if (mappedInput.wasLongPressed(MappedInputManager::Button::Back, 1500) ||
+      mappedInput.wasScreenLongPress(holdX, holdY)) {
     activityManager.pushActivity(std::make_unique<FishTankActivity>(renderer, mappedInput));
     return;
   }
