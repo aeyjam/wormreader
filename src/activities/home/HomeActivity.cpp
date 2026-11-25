@@ -1,5 +1,7 @@
 #include "HomeActivity.h"
 
+#include "FishTankActivity.h"
+
 #include <Bitmap.h>
 #include <Epub.h>
 #include <FsHelpers.h>
@@ -315,6 +317,11 @@ void HomeActivity::freeCoverBuffer() {
 }
 
 void HomeActivity::loop() {
+  // Easter egg: long-press Back opens the fish tank.
+  if (mappedInput.wasLongPressed(MappedInputManager::Button::Back, 1500)) {
+    activityManager.pushActivity(std::make_unique<FishTankActivity>(renderer, mappedInput));
+    return;
+  }
   const int menuCount = getMenuItemCount();
   const auto& metrics = UITheme::getInstance().getMetrics();
 
