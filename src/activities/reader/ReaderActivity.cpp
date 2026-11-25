@@ -18,6 +18,7 @@
 #include "ReaderUtils.h"
 #include "RecentBooksStore.h"
 #include "SdCardFontSystem.h"
+#include "activities/home/FishTankStore.h"
 #include "XtcReaderActivity.h"
 #include "activities/RenderLock.h"
 #include "sync/ReadingSessionLog.h"
@@ -55,6 +56,12 @@ void ReaderActivity::disableFastInitialRefresh() { pagesUntilFullRefresh = 0; }
 void ReaderActivity::notePageTurn(const bool forward, const bool succeeded) {
   RenderLock lock(*this);
   readerSession.noteTurn(forward, succeeded);
+  // Fish tank: every forward page earns progress toward a bookworm treat,
+  // and reaching the end of a book brings a new fish named after it.
+  if (forward && succeeded) {
+    fishtank::notePageRead();
+    if (isAtEndOfBook()) fishtank::noteBookFinished(getBookTitle());
+  }
 }
 
 void ReaderActivity::onEnter() {
