@@ -495,7 +495,6 @@ void FishTankActivity::render(RenderLock&&) {
   };
   const Plant plants[] = {
       {FERN, 9, 38, 3, 140},
-      {FERN, 9, 38, 3, W / 2 + 80},
       {FERN, 9, 38, 3, W - 210},
   };
   for (int p = 0; p < static_cast<int>(sizeof(plants) / sizeof(plants[0])); ++p) {

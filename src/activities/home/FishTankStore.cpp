@@ -59,7 +59,7 @@ State& state() {
     ok = f.read(&st, sizeof(st)) == static_cast<int>(sizeof(st)) && st.magic == MAGIC;
     f.close();
   }
-  if (!ok) {  // brand-new tank: clean water, first meal ready, four starter fish
+  if (!ok) {  // brand-new tank: clean water, first meal ready, two starter fish
     memset(&st, 0, sizeof(st));
     st.magic = MAGIC;
     st.lastFed = now - FEED_EVERY_S;
@@ -68,12 +68,12 @@ State& state() {
     for (int i = 0; i < STARTER_FISH; ++i) st.fish[i] = {static_cast<uint8_t>(i % FISH_KIND_COUNT), 3, ""};
     save();
   }
-  // Tanks made before there were 9 kinds had starters 0,1,0,1: give the last two new looks.
-  for (int i = 2; i < STARTER_FISH && i < st.fishCount; ++i) {
-    if (st.fish[i].name[0] == '\0' && st.fish[i].kind == i % 2) {
-      st.fish[i].kind = static_cast<uint8_t>(i);
-      save();
-    }
+  // Tanks from older builds started with 4 unnamed fish; keep only the first 2.
+  if (st.fishCount >= 4 && st.fish[2].name[0] == '\0' && st.fish[3].name[0] == '\0') {
+    memmove(&st.fish[2], &st.fish[4], (st.fishCount - 4) * sizeof(SavedFish));
+    st.fishCount -= 2;
+    st.newFishPending = st.newFishPending > 4 ? st.newFishPending - 2 : 0;
+    save();
   }
   // If the clock went backwards (lost time), don't let timers run negative.
   if (st.lastFed > now) st.lastFed = now - FEED_EVERY_S;

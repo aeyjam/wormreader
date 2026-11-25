@@ -6,9 +6,9 @@
 // Stored on the SD card as one small binary file (~400 bytes).
 namespace fishtank {
 
-constexpr int STARTER_FISH = 4;
+constexpr int STARTER_FISH = 2;
 constexpr int FISH_KIND_COUNT = 9;     // must match FISH_KINDS in FishTankActivity.cpp
-constexpr int MAX_FISH = 12;          // 4 starters + up to 8 "book fish"
+constexpr int MAX_FISH = 12;          // 2 starters + up to 10 "book fish"
 constexpr int PAGES_PER_WORM = 20;    // read this many pages -> 1 bookworm treat
 constexpr int MAX_WORMS = 99;
 constexpr int MAX_GROWN = 8;          // bookworms a fish can eat before it stops growing
